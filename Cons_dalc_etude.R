@@ -1,11 +1,11 @@
 library(tidyverse)
-alc18_10 <- read.csv("new.alc18_10.csv")
-alc09_00 <- read.csv("new.alc09_00.csv")
-alc99_80 <- read.csv("new.alc99_80.csv")
-alc79_60 <- read.csv("new.alc79_60.csv")
-abs_12_mois <- read.csv("abs_12_mois.csv")
-abs_vie <- read.csv("abs_vie.csv")
-ex_buveurs <- read.csv("ex_buveurs.csv")
+alc18_10 <- read.csv("data_source/new.alc18_10.csv")
+alc09_00 <- read.csv("data_source/new.alc09_00.csv")
+alc99_80 <- read.csv("data_source/new.alc99_80.csv")
+alc79_60 <- read.csv("data_source/new.alc79_60.csv")
+abs_12_mois <- read.csv("data_source/abs_12_mois.csv")
+abs_vie <- read.csv("data_source/abs_vie.csv")
+ex_buveurs <- read.csv("data_source/ex_buveurs.csv")
 
 ##### Consommation par pays #####
 colnames(alc18_10) <- c("Country","Data Source", "Beverage",alc18_10[1,4:length(alc18_10)])
