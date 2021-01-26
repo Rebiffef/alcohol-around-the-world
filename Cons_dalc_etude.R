@@ -24,7 +24,7 @@ alc18_60 <- full_join(full_join(full_join(alc18_10,alc09_00),alc99_80),alc79_60)
 
 alc18_60 <- gather(alc18_60, key = "year", value ="Alcohol..recorded.per.capita..15...consumption..in.litres.of.pure.alcohol.", -c("Country","Data Source","Beverage"))
 
-write_excel_csv(alc18_60, file="alc_total.csv")
+write_excel_csv(alc18_60, file="data_apres_jointure/alc_total.csv")
 
 #####
 
