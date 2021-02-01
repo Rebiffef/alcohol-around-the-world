@@ -32,23 +32,39 @@ write_excel_csv(alc18_60, file="data_apres_jointure/alc_total.csv")
 colnames(abs_12_mois) <- c("Country","Year","Both.Sexes","Male","Female")
 abs_12_mois <- abs_12_mois[-1,]
 abs_12_mois[abs_12_mois=="No data"] <- NA
-abs_12_mois <- gather(abs_12_mois, key="Sex", value="Alcohol..abstainers.past.12.months", -c("Country","Year"))
+abs_12_mois <- gather(abs_12_mois, key="gender", value="Alcohol..abstainers.past.12.months", -c("Country","Year"))
 abs_12_mois[,4] <- as.numeric(abs_12_mois[,4])
 #Dropped 1 country (not sure which one)
 colnames(abs_vie) <- c("Country","Year","Both.Sexes","Male","Female")
 abs_vie <- abs_vie[-1,]
 abs_vie[abs_vie=="."] <- NA
-abs_vie <- gather(abs_vie, key="Sex", value="Alcohol..abstainers.lifetime", -c("Country","Year"))
+abs_vie <- gather(abs_vie, key="gender", value="Alcohol..abstainers.lifetime", -c("Country","Year"))
 abs_vie[,4] <- as.numeric(abs_vie[,4])
 #Dropped 1 country (not sure which one)
 colnames(ex_buveurs) <- c("Country","Year","Both.Sexes","Male","Female")
 ex_buveurs <- ex_buveurs[-1,]
 ex_buveurs[ex_buveurs=="."] <- NA
-ex_buveurs <- gather(ex_buveurs, key="Sex", value="Alcohol..former.drinkers", -c("Country","Year"))
+ex_buveurs <- gather(ex_buveurs, key="gender", value="Alcohol..former.drinkers", -c("Country","Year"))
 ex_buveurs[,4] <- as.numeric(ex_buveurs[,4])
 #Dropped 1 country (not sure which one)
 
 pat_cons <- full_join(abs_12_mois,full_join(abs_vie,ex_buveurs))
+pat_cons$Year <- as.numeric(pat_cons$Year)
+write_excel_csv(pat_cons, file = "data_apres_jointure/pattern_consommation.csv")
 
-write_excel_csv(pat_cons, file="pat_cons.csv")
+pat_cons_gathered <- gather(pat_cons, key="Consumption.Type", value = "Percent.of.population", -c("Country","Year","gender"))
+pat_cons_gathered$Year <- as.numeric(pat_cons_gathered$Year)
+pat_cons_gathered$gender <- ifelse(pat_cons_gathered$gender=="Both.Sexes","Both.sexes",ifelse(pat_cons_gathered$gender=="Female","Female","Male"))
 
+write_excel_csv(pat_cons_gathered, file="data_apres_jointure/pattern_consommation_gathered.csv")
+
+pattern_consommation <- read_csv("data_apres_jointure/pattern_consommation.csv")
+consumers_profil <- read_csv("data_apres_jointure/consumers_profil.csv")
+consumers_profil <- consumers_profil[-1]
+consumers_profil$gender <- ifelse(consumers_profil$gender=="Both.sexes","Both.Sexes",ifelse(consumers_profil$gender=="Female","Female","Male"))
+test2 <- full_join(pattern_consommation,consumers_profil)
+consumers_profil_gathered <- gather(consumers_profil, key="profile", value="percent.of.pop.profile", -c("Country","Year","gender"))
+consumers_profil_gathered$percent.of.pop.profile <- as.numeric(consumers_profil_gathered$percent.of.pop.profile)
+write_excel_csv(consumers_profil_gathered, file="data_apres_jointure/consumers_profil_gathered.csv")
+
+test <- inner_join(pat_cons_gathered,consumers_profil)
