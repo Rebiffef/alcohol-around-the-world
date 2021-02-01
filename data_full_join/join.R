@@ -15,6 +15,7 @@ consumers$Gender[consumers$Gender=="Both.sexes"]<-"Both.Sexes"
 
 # join
 library(dplyr)
+library(readr)
 behavior<-full_join(consumers,abstainers,by=c("Country","Year","Gender"))
 alcohol_consumption<-full_join(alcool,behavior,by=c("Country","Year","Gender"))
 
@@ -23,3 +24,9 @@ alcohol_consumption[,5:13]<-unlist(lapply(5:13, function(i){as.numeric(alcohol_c
 alcohol_consumption[,3:4]<-lapply(3:4, function(i){as.factor(alcohol_consumption[,i])})
 
 write.csv(alcohol_consumption,"alcohol_consumption.csv")
+
+alcohol_consumption_2016<-right_join(alcool,behavior,by=c("Country","Year","Gender"))
+alcohol_consumption_2016<-alcohol_consumption_2016[,c(1,3,5,2,4,6:13)]
+alcohol_consumption_2016[,5:13]<-unlist(lapply(5:13, function(i){as.numeric(alcohol_consumption_2016[,i])}))
+alcohol_consumption_2016[,3:4]<-lapply(3:4, function(i){as.factor(alcohol_consumption_2016[,i])})
+write.csv(alcohol_consumption_2016,"alcohol_consumption_2016.csv")
