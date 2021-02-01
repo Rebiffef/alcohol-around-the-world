@@ -2,6 +2,7 @@ setwd("~/Documents/Tableau_alcohol/data_by_topic")
 
 #data set loading
 consumers<-as.data.frame(read.csv("consumers_profil.csv",dec=","))[,-1]
+colnames(consumers)[4:8]<-unlist(lapply(4:8,function(i){sub(".csv","",colnames(consumers)[i])}))
 abstainers<-as.data.frame(read.csv("pattern_consommation.csv",dec=","))
 alcool<-as.data.frame(read.csv("alc_total.csv",dec=","))[,-2]
 
