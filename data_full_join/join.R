@@ -29,7 +29,7 @@ alcohol_consumption<-alcohol_consumption[,c(5,6,1,3,7,2,4,8:15)]
 alcohol_consumption[,7:15]<-unlist(lapply(7:15, function(i){as.numeric(alcohol_consumption[,i])}))
 alcohol_consumption[,5:6]<-lapply(5:6, function(i){as.factor(alcohol_consumption[,i])})
 
-write.csv(alcohol_consumption,"alcohol_consumption.csv")
+write_csv(alcohol_consumption,"alcohol_consumption.csv")
 
 #alcohol_consumption_2016<-right_join(alcool,behavior,by=c("Country","Year","Gender"))
 #alcohol_consumption_2016<-alcohol_consumption_2016[,c(1,3,5,2,4,6:13)]
