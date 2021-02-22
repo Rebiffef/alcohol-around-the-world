@@ -17,10 +17,13 @@ consumers$Gender[consumers$Gender=="Both.sexes"]<-"Both.Sexes"
 library(dplyr)
 library(readr)
 behavior<-full_join(consumers,abstainers,by=c("Country","Year","Gender"))
+# correction : harmonisation
 behavior$Country[behavior$Country=="Côte d'Ivoire"]<-"Cote d'Ivoire"
-behavior<-full_join(alcool[,c("Country","Continent","Region")],behavior,by=c("Country"))
+behavior<-right_join(alcool[,c("Country","Continent","Region")],behavior,by=c("Country"))
+# Correction Pays manquants
 behavior[behavior$Country=="Monaco",c("Continent","Region")]<-behavior[behavior$Country=="France",c("Continent","Region")][1:sum(behavior$Country=="Monaco"),]
 behavior[behavior$Country=="South Sudan",c("Continent","Region")]<-behavior[behavior$Country=="Sudan",c("Continent","Region")][1:sum(behavior$Country=="South Sudan"),]
+
 alcohol_consumption<-full_join(alcool,behavior,by=c("Country","Continent","Region","Year","Gender"))
 
 alcohol_consumption<-alcohol_consumption[,c(5,6,1,3,7,2,4,8:15)]
